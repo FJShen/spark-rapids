@@ -28,3 +28,6 @@ scalastyle.txt
 target/
 */metastore_db
 */spark-warehouse
+.bloop/
+.metals/
+.vscode/
