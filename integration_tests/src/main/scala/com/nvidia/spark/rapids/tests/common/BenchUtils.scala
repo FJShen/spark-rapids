@@ -36,6 +36,9 @@ import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.util.QueryExecutionListener
 
+//import ITT JNI
+import com.fangjia.itt.ITT
+
 object BenchUtils {
 
   /** Perform benchmark of calling collect */
@@ -173,9 +176,14 @@ object BenchUtils {
 
       println(s"*** Start iteration $i:")
       val start = System.nanoTime()
+
+      
       try {
+        //After non-exhaustively reading the code, I believe the execution of the query does not happen here.
+        //The execution happens lazily when you refer to the results, which happens somewhere down the call stack of df.collect().
         df = createDataFrame(spark)
 
+        ITT.itt_resume();
         resultsAction match {
           case Collect() => df.collect()
           case WriteCsv(path, mode, options) =>
@@ -185,6 +193,7 @@ object BenchUtils {
           case WriteParquet(path, mode, options) =>
             ensureValidColumnNames(df).write.mode(mode).options(options).parquet(path)
         }
+        ITT.itt_pause();
 
         val end = System.nanoTime()
         val elapsed = NANOSECONDS.toMillis(end - start)
@@ -200,6 +209,7 @@ object BenchUtils {
           exceptions.append(BenchUtils.toString(e))
           e.printStackTrace()
       }
+      ITT.itt_pause(); //this lines acts as a catch-all for any profiling collection that is not paused yet
     }
 
     // only show query times if there were no failed queries
