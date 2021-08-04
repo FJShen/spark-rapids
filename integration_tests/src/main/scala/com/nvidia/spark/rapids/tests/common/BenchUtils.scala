@@ -37,7 +37,7 @@ import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.util.QueryExecutionListener
 
 //import ITT JNI
-import com.fangjia.itt.ITT
+import com.fangjia.itt.{ITT, ITT_Domain}
 
 object BenchUtils {
 
@@ -147,6 +147,8 @@ object BenchUtils {
       iterations: Int,
       gcBetweenRuns: Boolean
   ): BenchmarkReport = {
+    val query_domain_itt: ITT_Domain = ITT.itt_domain_create(queryDescription)
+    ITT.itt_domain_register(queryDescription, query_domain_itt)
 
     assert(iterations > 0)
 
@@ -183,7 +185,7 @@ object BenchUtils {
         //The execution happens lazily when you refer to the results, which happens somewhere down the call stack of df.collect().
         df = createDataFrame(spark)
 
-        ITT.itt_resume();
+        ITT.itt_frame_begin_v3(query_domain_itt, 0);
         resultsAction match {
           case Collect() => df.collect()
           case WriteCsv(path, mode, options) =>
@@ -193,7 +195,7 @@ object BenchUtils {
           case WriteParquet(path, mode, options) =>
             ensureValidColumnNames(df).write.mode(mode).options(options).parquet(path)
         }
-        ITT.itt_pause();
+        ITT.itt_frame_end_v3(query_domain_itt, 0);
 
         val end = System.nanoTime()
         val elapsed = NANOSECONDS.toMillis(end - start)
@@ -209,7 +211,7 @@ object BenchUtils {
           exceptions.append(BenchUtils.toString(e))
           e.printStackTrace()
       }
-      ITT.itt_pause(); //this lines acts as a catch-all for any profiling collection that is not paused yet
+      ITT.itt_frame_end_v3(query_domain_itt, 0); //this lines acts as a catch-all for any profiling collection that is not paused yet
     }
 
     // only show query times if there were no failed queries
