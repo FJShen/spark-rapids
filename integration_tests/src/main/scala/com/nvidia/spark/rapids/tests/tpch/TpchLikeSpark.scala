@@ -120,7 +120,7 @@ object TpchLikeSpark {
     readOrdersCSV(spark, path).createOrReplaceTempView("orders")
 
   def setupOrdersParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("orders")
+    spark.read.parquet(path).cache().createOrReplaceTempView("orders")
 
   def setupOrdersOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("orders")
@@ -152,7 +152,7 @@ object TpchLikeSpark {
     readLineitemCSV(spark, path).createOrReplaceTempView("lineitem")
 
   def setupLineitemParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("lineitem")
+    spark.read.parquet(path).cache().createOrReplaceTempView("lineitem")
 
   def setupLineitemOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("lineitem")
@@ -176,7 +176,7 @@ object TpchLikeSpark {
     readCustomerCSV(spark, path).createOrReplaceTempView("customer")
 
   def setupCustomerParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("customer")
+    spark.read.parquet(path).cache().createOrReplaceTempView("customer")
 
   def setupCustomerOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("customer")
@@ -196,7 +196,7 @@ object TpchLikeSpark {
     readNationCSV(spark, path).createOrReplaceTempView("nation")
 
   def setupNationParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("nation")
+    spark.read.parquet(path).cache().createOrReplaceTempView("nation")
 
   def setupNationOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("nation")
@@ -221,7 +221,7 @@ object TpchLikeSpark {
     readPartCSV(spark, path).createOrReplaceTempView("part")
 
   def setupPartParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("part")
+    spark.read.parquet(path).cache().createOrReplaceTempView("part")
 
   def setupPartOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("part")
@@ -242,7 +242,7 @@ object TpchLikeSpark {
     readPartsuppCSV(spark, path).createOrReplaceTempView("partsupp")
 
   def setupPartsuppParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("partsupp")
+    spark.read.parquet(path).cache().createOrReplaceTempView("partsupp")
 
   def setupPartsuppOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("partsupp")
@@ -261,7 +261,7 @@ object TpchLikeSpark {
     readRegionCSV(spark, path).createOrReplaceTempView("region")
 
   def setupRegionParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("region")
+    spark.read.parquet(path).cache().createOrReplaceTempView("region")
 
   def setupRegionOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("region")
@@ -284,7 +284,7 @@ object TpchLikeSpark {
     readSupplierCSV(spark, path).createOrReplaceTempView("supplier")
 
   def setupSupplierParquet(spark: SparkSession, path: String): Unit =
-    spark.read.parquet(path).createOrReplaceTempView("supplier")
+    spark.read.parquet(path).cache().createOrReplaceTempView("supplier")
 
   def setupSupplierOrc(spark: SparkSession, path: String): Unit =
     spark.read.orc(path).createOrReplaceTempView("supplier")
