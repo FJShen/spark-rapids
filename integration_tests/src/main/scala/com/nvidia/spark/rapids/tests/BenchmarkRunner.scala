@@ -67,7 +67,7 @@ object BenchmarkRunner {
 
         val runner = new BenchmarkRunner(bench)
         println(s"*** RUNNING ${bench.name()} QUERY ${conf.query()}")
-        ITT.itt_resume()
+        //ITT.itt_resume()
         val report = Try(conf.output.toOption match {
           case Some(path) => conf.outputFormat().toLowerCase match {
             case "parquet" =>
@@ -105,7 +105,7 @@ object BenchmarkRunner {
               summaryFilePrefix = conf.summaryFilePrefix.toOption,
               gcBetweenRuns = conf.gcBetweenRuns())
         })
-        ITT.itt_pause()
+        //ITT.itt_pause()
 
         report match {
           case Success(report) =>
@@ -124,7 +124,7 @@ object BenchmarkRunner {
             System.err.println(e.getMessage)
             System.exit(-1)
         }
-        ITT.itt_pause()
+        //ITT.itt_pause()
       case _ =>
         System.err.println(s"Invalid benchmark name: ${conf.benchmark()}. Supported benchmarks " +
             s"are ${benchmarks.keys.mkString(",")}")
